@@ -103,3 +103,8 @@ ENV/
 #data
 
 _raw/
+
+
+#environ
+
+.set_environ
