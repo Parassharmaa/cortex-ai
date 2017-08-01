@@ -1,5 +1,0 @@
-export BIO_CLASSIFY="mongodb://paras:formicacid@ds151008.mlab.com:51008/bio-classify"
-export TW_ASECRET="LgyrN8X0t5ynTcq8NwJ7Atehh0CrD7477wFUKf8NrEolM"
-export TW_ATOKEN="850697540-E6ccBsss0Lx3o1pxlXvRsaXPeWepWTUgvaybR0fq"
-export TW_CKEY="8E17QEDQMdi8c2qdEG6bslpdg"
-export TW_CSECRET="Hzrfjmy3e0KyuNEqrGOyUTXrDTKwmes0lWaAmOo7BlqKPHlUWZ"
