@@ -1,7 +1,6 @@
 import tweepy
 import os
 import time
-import pymongo
 
 consumer_key = os.environ['TW_CKEY']
 consumer_secret = os.environ['TW_CSECRET']
@@ -11,9 +10,6 @@ access_secret = os.environ['TW_ASECRET']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
-
-db_url = os.environ['BIO_CLASSIFY']
-client = pymongo.MongoClient(db_url)
 
 api = tweepy.API(auth)
 
@@ -45,7 +41,7 @@ reference_users = ["paraazz",
 time_instance = time.time()
 
 def save_data(data):
-    with open("unlabled/bio_{}.text".format(time_instance), "a") as f:
+    with open("unlabled/bio_{}.txt".format(time_instance), "a") as f:
     	f.write(data+"\n")
     	f.close()
 
