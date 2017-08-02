@@ -20,17 +20,17 @@ api = tweepy.API(auth)
 reference_users = ["shiffman",
 					"SalihSarikaya",
 					"NationalistRavi",
-					"melindagates",
-					"tweetsauce",
-					"TeslaMotors",
-					"taylorswift13",
-					"chetan_bhagat",
-					"thekiranbedi",
-					"drharshvardhan",
-					"JeffreyVC",
-					"charlierose",
-					"selenagomez",
-					"nnahense"
+					# "melindagates",
+					# "tweetsauce",
+					# "TeslaMotors",
+					# "taylorswift13",
+					# "chetan_bhagat",
+					# "thekiranbedi",
+					# "drharshvardhan",
+					# "JeffreyVC",
+					# "charlierose",
+					# "selenagomez",
+					# "nnahense"
 					]
 
 time_instance = time.time()
@@ -65,14 +65,13 @@ ids = set()
 while i < len(reference_users):
 	print("Getting friends of: ", reference_users[i])
 	try:
-		i+=1
 		for page in tweepy.Cursor(api.friends_ids, \
-									screen_name=reference_users[i]).pages():
+									screen_name=reference_users[i], count=1000).pages():
 			print("-")
+			print(page)
 			ids.add(page[0])
-			time.sleep(60)
 		print("Total friends:", len(ids))
-
+		i+=1
 		# ===== Sequential Code ======
 		'''for e in ids:
 		 	user = api.get_user(e)
@@ -83,9 +82,10 @@ while i < len(reference_users):
 		'''
 
 	except Exception as e:
+		i+=1
 		print("Error: ", e)
 		print("\n\nRetrying in 15 minutes")
-		time.sleep(915)
+		time.sleep(915	)
 		pass
 
 fo = open("unlabled/multi_bio.txt", "a")
