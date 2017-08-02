@@ -17,11 +17,20 @@ auth.set_access_token(access_token, access_secret)
 
 api = tweepy.API(auth)
 
-reference_users = ["sanchit_raina",
-					"easyamol",
-					"shiffman",
+reference_users = ["shiffman",
 					"SalihSarikaya",
-					"NationalistRavi"
+					"NationalistRavi",
+					"melindagates",
+					"tweetsauce",
+					"TeslaMotors",
+					"taylorswift13",
+					"chetan_bhagat",
+					"thekiranbedi",
+					"drharshvardhan",
+					"JeffreyVC",
+					"charlierose",
+					"selenagomez",
+					"nnahense"
 					]
 
 time_instance = time.time()
@@ -40,30 +49,28 @@ class MutliThreadBio(threading.Thread):
 		self.username = username
 
 	def run(self):
-		while 1:
-			try:
-				user = api.get_user(self.username)
-				if len(user.description) > 3:
-					print("Saving Bio:", user.screen_name)
-					fo.write(user.description + '\n')
-					time.sleep(random.uniform(0.1, 0.9))
-				break
-			except Exception as e:
-				print("Error: ", e)
-				print("\n\nRetrying in 15 minutes")
-				time.sleep(915)
-				pass
+		try:
+			user = api.get_user(self.username)
+			if len(user.description) > 3:
+				print("Saving Bio:", user.screen_name)
+				fo.write(user.description + '\n')
+				time.sleep(random.uniform(0.1, 0.9))
+		except Exception as e:
+			print("Error: ", e)
+			print("\n\nRetrying in 15 minutes")
+			time.sleep(915)
+			pass
 
-
+ids = set()
 while i < len(reference_users):
-	ids = []
 	print("Getting friends of: ", reference_users[i])
-
 	try:
+		i+=1
 		for page in tweepy.Cursor(api.friends_ids, \
-								screen_name=reference_users[i]).pages():
+									screen_name=reference_users[i]).pages():
 			print("-")
-			ids.extend(page)
+			ids.add(page[0])
+			time.sleep(60)
 		print("Total friends:", len(ids))
 
 		# ===== Sequential Code ======
@@ -74,17 +81,17 @@ while i < len(reference_users):
 		 		total_bio+=1
 		 		save_data(user.description)
 		'''
-		fo = open("unlabled/multi_bio.txt", "a")
-		for i in ids:
-			t = MutliThreadBio(username = i)
-			t.start()
-		i+=1
+
 	except Exception as e:
 		print("Error: ", e)
 		print("\n\nRetrying in 15 minutes")
 		time.sleep(915)
 		pass
 
+fo = open("unlabled/multi_bio.txt", "a")
+for i in ids:
+	t = MutliThreadBio(username = i)
+	t.start()
 
 print("Time Taken:", time.time()-t0)
 	
