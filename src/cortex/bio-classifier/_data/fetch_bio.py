@@ -1,10 +1,6 @@
-''' Function: Get bio of twitter users followed by users in array reference_users'''
-
-import tweepy
+mport tweepy
 import os
 import time
-import threading 
-import random
 
 consumer_key = os.environ['TW_CKEY']
 consumer_secret = os.environ['TW_CSECRET']
@@ -17,81 +13,64 @@ auth.set_access_token(access_token, access_secret)
 
 api = tweepy.API(auth)
 
-reference_users = ["shiffman",
-					"SalihSarikaya",
-					"NationalistRavi",
-					# "melindagates",
-					# "tweetsauce",
-					# "TeslaMotors",
-					# "taylorswift13",
-					# "chetan_bhagat",
-					# "thekiranbedi",
-					# "drharshvardhan",
-					# "JeffreyVC",
-					# "charlierose",
-					# "selenagomez",
-					# "nnahense"
+reference_users = ["paraazz", 
+					"vmesel",
+					"bansaladitya209",
+					"mitsuhiko",
+					"Kailash26558592",
+					"arorakanav11",
+					"chiax",
+					"jk_rowling",
+					"rishibagree",
+					"rishabhmhjn",
+					"GavinFree",
+					"HerrBains",
+					"JulianAssange",
+					"davidfrawleyved",
+					"DaveLeeBBC",
+					"marcorubio",
+					"CaseyNewton",
+					"narendramodi",
+					"fgautier26",
+					"sundarpichai",
+					"Pogue",
+					"SushmaSwaraj",
+					"waltmossberg"
 					]
 
 time_instance = time.time()
 
-i = 0
-t0 = time.time()
-
 def save_data(data):
-	with open("unlabled/bio_{}.txt".format(time_instance), "a") as f:
-		f.write(data+"\n")
-		f.close()
+    with open("unlabled/bio_{}.txt".format(time_instance), "a") as f:
+    	f.write(data+"\n")
+    	f.close()
 
-class MutliThreadBio(threading.Thread):
-	def __init__(self, username):
-		threading.Thread.__init__(self)
-		self.username = username
-
-	def run(self):
-		try:
-			user = api.get_user(self.username)
-			if len(user.description) > 3:
-				print("Saving Bio:", user.screen_name)
-				fo.write(user.description + '\n')
-				time.sleep(random.uniform(0.1, 0.9))
-		except Exception as e:
-			print("Error: ", e)
-			print("\n\nRetrying in 15 minutes")
-			time.sleep(915)
-			pass
-
-ids = set()
+i = 0
+total_bio = 0
+t0 = time.time()
 while i < len(reference_users):
+	ids = []
 	print("Getting friends of: ", reference_users[i])
+
 	try:
 		for page in tweepy.Cursor(api.friends_ids, \
-									screen_name=reference_users[i], count=1000).pages():
+								screen_name=reference_users[i]).pages():
 			print("-")
-			print(page)
-			ids.add(page[0])
+			ids.extend(page)
 		print("Total friends:", len(ids))
+		for e in ids:
+			user = api.get_user(e)
+			print("Saving Bio:", user.screen_name)
+			if len(user.description) > 3:
+				total_bio+=1
+				save_data(user.description)
+		
 		i+=1
-		# ===== Sequential Code ======
-		'''for e in ids:
-		 	user = api.get_user(e)
-		 	print("Saving Bio:", user.screen_name)
-		 	if len(user.description) > 3:
-		 		total_bio+=1
-		 		save_data(user.description)
-		'''
-
 	except Exception as e:
-		i+=1
 		print("Error: ", e)
 		print("\n\nRetrying in 15 minutes")
-		time.sleep(915	)
+		time.sleep(915)
 		pass
 
-fo = open("unlabled/multi_bio.txt", "a")
-for i in ids:
-	t = MutliThreadBio(username = i)
-	t.start()
-
+print("Total bio collected:", total_bio)
 print("Time Taken:", time.time()-t0)
-	
