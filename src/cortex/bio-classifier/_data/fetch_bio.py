@@ -1,4 +1,4 @@
-import tweepy
+mport tweepy
 import os
 import time
 
@@ -74,4 +74,3 @@ while i < len(reference_users):
 
 print("Total bio collected:", total_bio)
 print("Time Taken:", time.time()-t0)
-	
