@@ -108,3 +108,10 @@ _raw/
 #environ
 
 .set_environ
+
+
+#binaries
+*.bin
+*.w2v
+*.npy
+*.out
