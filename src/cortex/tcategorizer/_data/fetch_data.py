@@ -12,7 +12,10 @@
 
 import requests
 import os
+import time
 import multiprocessing
+import pandas as pd
+import datetime
 
 headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
            'Accept-Encoding': 'gzip, deflate, sdch',
@@ -47,9 +50,9 @@ subreddit = {
 
 def build_data(data, topic):
 	pre = []
-	if os.path.isfile("raw/{}".format(topic)):
+	if os.path.isfile('raw/{}'.format(topic)):
 		pre = open('raw/'+topic+".txt", 'r').read().split('\n')
-	with open("raw/"+topic+'.txt', 'a') as f:
+	with open('raw/'+topic+'.txt', 'a') as f:
 		for i in data['data']['children']:
 			i = i['data']['title']
 			if i not in pre:
@@ -59,14 +62,14 @@ def build_data(data, topic):
 def get_data(subreddit, topic):
 	if not os.path.isdir("raw"):
 		os.mkdir("raw")
-	url = "https://www.reddit.com/r/{}/.json?limit=100".format(subreddit)
+	url = 'https://www.reddit.com/r/{}/.json?limit=100'.format(subreddit)
 	r = requests.get(url, headers=headers)
 	if r.status_code == 200:
 		r = r.json()
 		build_data(r, topic)
 		i = 0
 		while r['data']['after'] and i < 100:
-			url = "https://www.reddit.com/r/{}/.json?limit=100&after={}". \
+			url = 'https://www.reddit.com/r/{}/.json?limit=100&after={}'. \
 					format(subreddit, r['data']['after'])
 			r = requests.get(url, headers=headers)
 			r = r.json()
@@ -75,13 +78,31 @@ def get_data(subreddit, topic):
 
 def sub_data(s):
 	for s in subreddit[t]:
-		print("Fetching Data: {} ({})".format(s, t))
+		print('Fetching Data: {} ({})'.format(s, t))
 		get_data(s, t)
 
 
-jobs = []
+t0 = time.time()
+threads = []
 for t in subreddit:
 	p = multiprocessing.Process(target=sub_data, args=(t,))
-	jobs.append(p)
-	p.start()
-	sub_data(t)
+	threads.append(p)
+
+[t.start() for t in threads]
+[t.join() for t in threads]
+print('Data fetching finished in: ', time.time()-t0)
+
+print('Finalising data..')
+
+all_data = []
+files = os.listdir('raw')
+path = 'raw'
+for i in files:
+	with open(os.path.join(path,i)) as f:
+		for t in f.read().split('\n'):
+			all_data.append([t, i[:-4]])
+
+df = pd.DataFrame(all_data, columns=['text', 'category'])
+df.to_csv('raw/labeled_text_{}.csv.gz'. \
+			format(datetime.datetime.strftime(datetime.datetime.now(), "%Y_%m_%d")), \
+			compression='gzip')
