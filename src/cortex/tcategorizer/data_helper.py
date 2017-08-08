@@ -39,8 +39,6 @@ def pad_sentences(sentences, padding_word='<PAD/>', \
     if forced_sequence_length is None:
         sequence_length = max(len(x) for x in sentences)
     else: # Prediction
-        logging.critical('This is prediction, reading \
-                            the trained sequence length')
         sequence_length = forced_sequence_length
     logging.critical('The maximum length is %s', str(sequence_length))
 
@@ -52,8 +50,7 @@ def pad_sentences(sentences, padding_word='<PAD/>', \
         # Prediction: cut off the sentence
         # if it is longer than the sequence length
         if num_padding < 0:
-            logging.info('This sentence has to be cut off \
-                        because it is longer than trained sequence length')
+            logging.info('This sentence has to be cut off because it is longer than trained sequence length')
             padded_sentence = sentence[0:sequence_length]
         else:
             padded_sentence = sentence + ([padding_word] * num_padding)

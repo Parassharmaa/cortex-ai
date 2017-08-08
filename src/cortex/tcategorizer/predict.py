@@ -12,6 +12,8 @@ from text_cnn_rnn import TextCNNRNN
 
 logging.getLogger().setLevel(logging.INFO)
 
+model_dir = "trained_results_1502115011"
+
 def load_trained_params(trained_dir):
 	params = json.loads(open(trained_dir + 'trained_parameters.json').read())
 	words_index = json.loads(open(trained_dir + 'words_index.json').read())
@@ -35,7 +37,7 @@ def map_word_to_index(examples, words_index):
 		x_.append(temp)
 	return x_
 
-def predict_unseen_data(model_dir, text):
+def predict_unseen_data(text):
 	trained_dir = model_dir
 	if not trained_dir.endswith('/'):
 		trained_dir += '/'
@@ -54,14 +56,14 @@ def predict_unseen_data(model_dir, text):
 				embedding_mat = embedding_mat,
 				non_static = params['non_static'],
 				hidden_unit = params['hidden_unit'],
-				sequence_length = len(x_test),
+				sequence_length = len(x_test[0]),
 				max_pool_size = params['max_pool_size'],
 				filter_sizes = map(int, params['filter_sizes'].split(",")),
 				num_filters = params['num_filters'],
 				num_classes = len(labels),
 				embedding_size = params['embedding_dim'],
 				l2_reg_lambda = params['l2_reg_lambda'])
-
+			
 			def real_len(batches):
 				return [np.ceil(np.argmin(batch + [0]) * 1.0 / params['max_pool_size']) for batch in batches]
 
@@ -77,7 +79,7 @@ def predict_unseen_data(model_dir, text):
 				return predictions
 
 			checkpoint_file = trained_dir + 'best_model.ckpt'
-			saver = tf.train.Saver(tf.all_variables())
+			saver = tf.train.Saver(tf.global_variables())
 			saver = tf.train.import_meta_graph("{}.meta".format(checkpoint_file[:-5]))
 			saver.restore(sess, checkpoint_file)
 			logging.critical('{} has been loaded'.format(checkpoint_file))
@@ -85,16 +87,12 @@ def predict_unseen_data(model_dir, text):
 			batches = data_helper.batch_iter(list(x_), params['batch_size'], 1, shuffle=False)
 			predictions, predict_labels = [], []
 			for x_batch in batches:
-				print(x_batch.shape)
-				x_batch = x_batch.reshape(-1, 1)
-				print(x_batch.shape)
-				print(x_batch)
 				batch_predictions = predict_step(x_batch)[0]
 				for batch_prediction in batch_predictions:
 					predictions.append(batch_prediction)
 					predict_labels.append(labels[batch_prediction])
-			print(predict_labels)
+			return predict_labels
 
 
 if __name__ == '__main__':
-	predict_unseen_data("trained_results_1502115011", "Technology is good")
+	print(predict_unseen_data("Narendra Modi is prime minister of india"))
