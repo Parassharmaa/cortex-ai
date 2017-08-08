@@ -16,6 +16,7 @@ import time
 import multiprocessing
 import pandas as pd
 import datetime
+import codecs
 
 headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
            'Accept-Encoding': 'gzip, deflate, sdch',
@@ -83,13 +84,14 @@ def sub_data(s):
 
 
 t0 = time.time()
-threads = []
+#threads = []
 for t in subreddit:
-	p = multiprocessing.Process(target=sub_data, args=(t,))
-	threads.append(p)
+	sub_data(t)
+	# p = multiprocessing.Process(target=sub_data, args=(t,))
+	# threads.append(p)
 
-[t.start() for t in threads]
-[t.join() for t in threads]
+# [t.start() for t in threads]
+# [t.join() for t in threads]
 print('Data fetching finished in: ', time.time()-t0)
 
 print('Finalising data..')
@@ -98,11 +100,18 @@ all_data = []
 files = os.listdir('raw')
 path = 'raw'
 for i in files:
-	with open(os.path.join(path,i)) as f:
-		for t in f.read().split('\n'):
-			all_data.append([t, i[:-4]])
+	with open(os.path.join(path,i), "r", encoding='utf-8') as f:
+		try:
+			for t in f.read().split('\n'):
+				all_data.append([t, i[:-4]])
+			print(i[:-4])
+		except:
+			print("E")
+			pass
 
 df = pd.DataFrame(all_data, columns=['text', 'category'])
+df.drop_duplicates('text', inplace=True)
+df.reset_index(drop=True, inplace=True)
 df.to_csv('raw/labeled_text_{}.csv.gz'. \
 			format(datetime.datetime.strftime(datetime.datetime.now(), "%Y_%m_%d")), \
-			compression='gzip')
+			compression='gzip', encoding="utf-8")

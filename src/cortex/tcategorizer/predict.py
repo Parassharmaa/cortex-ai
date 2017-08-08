@@ -85,14 +85,12 @@ def predict_unseen_data(text):
 			logging.critical('{} has been loaded'.format(checkpoint_file))
 
 			batches = data_helper.batch_iter(list(x_), params['batch_size'], 1, shuffle=False)
-			predictions, predict_labels = [], []
+			predictions = ""
 			for x_batch in batches:
-				batch_predictions = predict_step(x_batch)[0]
-				for batch_prediction in batch_predictions:
-					predictions.append(batch_prediction)
-					predict_labels.append(labels[batch_prediction])
-			return predict_labels
+				batch_predictions = predict_step(x_batch)[0][0]
+				predictions = batch_predictions
+			return labels[predictions]
 
 
 if __name__ == '__main__':
-	print(predict_unseen_data("Narendra Modi is prime minister of india"))
+	print(predict_unseen_data("india"))

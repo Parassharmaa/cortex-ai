@@ -7,3 +7,7 @@ tensorflow
 gensim
 seaborn
 matplotlib
+textblob
+pylint3
+requests
+bs4
