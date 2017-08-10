@@ -112,9 +112,6 @@ _raw/
 
 #binaries
 *.bin
-*.w2v
-*.npy
-*.out
 
 #custome folders
 checkpoint*/

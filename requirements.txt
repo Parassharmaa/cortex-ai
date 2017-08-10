@@ -11,3 +11,4 @@ textblob
 pylint3
 requests
 bs4
+instafetch
