@@ -28,9 +28,12 @@ def fetch_hashtags(tag):
     captions = []
     print("Data fetch complete: [{}]".format(tag))
     for i in all_posts['data']:
-        c = i['caption']
-        if is_english(c):
-            captions.append(c+"\n")
+        try:
+            c = i['caption']
+            if is_english(c):
+                captions.append(c+"\n")
+        except:
+            pass
     for cp in captions:        
         try:
             with open(os.path.join(dir_path, file_name), "a") as f:
