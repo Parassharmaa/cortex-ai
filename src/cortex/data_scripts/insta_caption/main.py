@@ -44,6 +44,17 @@ def fetch_hashtags(tag):
     print("Saved Caption for #",tag)
  
 if __name__ == "__main__":
-    hashtags = ["cool", "tech", "hello"]
+    hashtags =  ['crowd', 'score', 'sports', 'fitness', 'tagblender', 'gym', 
+'train', 'health', 'sportsbrav', 'winner', 'best', 'somuchfun', 'training', 
+'loveit', 'justdoit', 'active', 'exercise', 'workout', 'healthy','sporty',
+'fitnessmodel', 'tattoos', 'beautiful', 'player', 'court', 'fashion', 'love',
+'vehicles', 'road', 'cars', 'freeway', 'ride', 'instarun', 'cardio', 'pool',
+'blue', 'watersport', 'swim', 'instayoga', 'yogapose', 'yogaforlovers', 
+'igyoga', 'life', 'city', 'style', 'town', 'architecture', 'urban', 'street',
+'red', 'photooftheday', 'cute', 'orange', 'nature', 'girl', 'instamood',
+'clearsky', 'fun', 'vacation', 'season', 'summer', 'christmas', 'pouring',
+'water', 'cool', 'family', 'sexy', 'hot', 'face', 'goodtime', 'funny', 'guy',
+'hair', 'siblings', 'bff', 'bestfriend', 'me', 'sweet', 'heart', 'women', 
+'figure', 'vibes', 'green', 'fantastic']
     for h in hashtags:       
         fetch_hashtags(h)
