@@ -41,6 +41,6 @@ def fetch_hashtags(tag):
     print("Saved Caption for #",tag)
  
 if __name__ == "__main__":
-    hashtags = ["", "", ""]
+    hashtags = ["cool", "tech", "hello"]
     for h in hashtags:       
         fetch_hashtags(h)
