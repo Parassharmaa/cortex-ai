@@ -3,12 +3,11 @@ pandas
 scipy
 sklearn
 nltk
-tensorflow
 gensim
 seaborn
 matplotlib
 textblob
-pylint3
 requests
 bs4
 instafetch
+jupyter
