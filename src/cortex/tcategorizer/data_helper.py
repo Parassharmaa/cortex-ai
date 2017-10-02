@@ -40,7 +40,7 @@ def pad_sentences(sentences, padding_word='<PAD/>', \
         sequence_length = max(len(x) for x in sentences)
     else: # Prediction
         sequence_length = forced_sequence_length
-    logging.critical('The maximum length is %s', str(sequence_length))
+    # logging.critical('The maximum length is %s', str(sequence_length))
 
     padded_sentences = []
     for i, s in enumerate(sentences):
