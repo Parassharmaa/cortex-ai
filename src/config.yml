@@ -1,0 +1,6 @@
+version: 1.0
+token: "cortexai"
+functions:
+  predict:
+    path: "/predict/interest"
+    function: "lambda.predict_interest"

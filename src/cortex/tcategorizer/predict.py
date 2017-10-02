@@ -4,11 +4,11 @@ import json
 import shutil
 import pickle
 import logging
-import data_helper
+from cortex.tcategorizer import data_helper
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from text_cnn_rnn import TextCNNRNN
+from cortex.tcategorizer.text_cnn_rnn import TextCNNRNN
 import time
 
 logging.getLogger().setLevel(logging.INFO)
@@ -17,7 +17,7 @@ model_dir = "trained_results_1502115011"
 
 
 class Classifier(object):
-	def __init__(self, trained_dir):
+	def __init__(self, trained_dir, seq_len=67):
 		self.trained_dir = trained_dir
 		if not self.trained_dir.endswith('/'):
 			self.trained_dir += '/'
@@ -28,7 +28,7 @@ class Classifier(object):
 			embedding_mat = self.embedding_mat,
 			non_static = self.params['non_static'],
 			hidden_unit = self.params['hidden_unit'],
-			sequence_length = 67,
+			sequence_length = seq_len,
 			max_pool_size = self.params['max_pool_size'],
 			filter_sizes = map(int, self.params['filter_sizes'].split(",")),
 			num_filters = self.params['num_filters'],
@@ -91,7 +91,7 @@ class Classifier(object):
 		for x_batch in batches:
 			batch_predictions = self.predict_step(x_batch)[0][0]
 			predictions = batch_predictions
-		print(self.labels[predictions])
+		return self.labels[predictions]
 
 
 if __name__ == '__main__':

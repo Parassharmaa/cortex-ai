@@ -11,3 +11,4 @@ requests
 bs4
 instafetch
 jupyter
+firefly-python
