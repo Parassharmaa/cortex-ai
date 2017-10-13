@@ -14,7 +14,7 @@ we = WordExtractor()
 def predict_interest(payload):
 	result = {}
 	for s in payload:
-		result[s] = iclf.predict(s)
+		result[s] = iclf.predict(s).replace('_', ' ')
 	return result
 
 def predict_hashtag(payload):
