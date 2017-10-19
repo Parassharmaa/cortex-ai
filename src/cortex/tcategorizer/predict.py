@@ -13,7 +13,7 @@ import time
 
 logging.getLogger().setLevel(logging.INFO)
 
-model_dir = "trained_results_1502115011"
+model_dir = "trained_results_1502219150"
 
 
 class Classifier(object):
