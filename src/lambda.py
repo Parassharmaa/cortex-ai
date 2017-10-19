@@ -4,7 +4,7 @@ from cortex.tcategorizer.predict import Classifier
 from cortex.hashtag.hthink import Hthinker
 from cortex.hashtag.word_extract import WordExtractor
 
-imodel_dir = 'cortex/tcategorizer/trained_results_1502219150/'
+imodel_dir = 'cortex/tcategorizer/trained_results_1508239257'
 imodel_seq = 70
 
 iclf = Classifier(imodel_dir, seq_len = imodel_seq)
