@@ -7,3 +7,6 @@ functions:
   hashtag:
     path: "/predict/hashtags"
     function: "lambda.predict_hashtag"
+  keyword:
+    path: "/analyse/text"
+    function: "lambda.keyword_freq"

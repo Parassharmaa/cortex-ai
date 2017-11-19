@@ -27,6 +27,7 @@ def predict_hashtag(payload):
 
 
 def keyword_freq(payload):
-	data = we.get_keyword_count(payload)
+	words = we.get_keyword_count(payload)
+	data = hthink.think(words)
 	return data
 
